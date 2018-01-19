@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!-- the display-name has to be the same as the context-root in jboss.xml -->
+    <display-name>theblog</display-name>
+    
+    <!-- https://planet.jboss.org/post/setting_jsf_projectstage_with_jndi -->
+    <resource-ref>
+        <res-ref-name>jsf/ProjectStage</res-ref-name>
+        <res-type>java.lang.String</res-type>
+    </resource-ref>
+</web-app>
