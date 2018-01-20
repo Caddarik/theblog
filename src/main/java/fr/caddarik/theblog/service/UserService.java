@@ -74,7 +74,7 @@ public class UserService {
      * @param id the id of the user to update
      * @param user the user to update
      * @param login the login of the client
-     * @param secret the password of the client
+     * @param secret the client password crypted with PBKDF2WithHmacSHA1 algorithm
      * @throws BadRequestException if the id is not equals to user.id 
      * @throws AuthException if the client is not allowed to call this method
      * @throws LoginException if the login or password are incorrect
@@ -106,7 +106,7 @@ public class UserService {
      * 
      * @param id the Id of the user to find
      * @param login the login of the client
-     * @param secret the password of the client
+     * @param secret the client password crypted with PBKDF2WithHmacSHA1 algorithm
      * @return the corresponding user
      * @throws AuthException if the client is not allowed to call this method
      * @throws LoginException if the login or password are incorrect
