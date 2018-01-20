@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.caddarik.theblog.dao.jooq.mapper;
+package fr.caddarik.theblog.dao.mapper;
 
 import fr.caddarik.theblog.dao.jooq.converter.DateConverter;
 import fr.caddarik.theblog.dao.jooq.tables.records.PostRecord;

@@ -6,7 +6,7 @@
 package fr.caddarik.theblog.dao;
 
 import static fr.caddarik.theblog.dao.jooq.Tables.POST;
-import fr.caddarik.theblog.dao.jooq.mapper.PostMapper;
+import fr.caddarik.theblog.dao.mapper.PostMapper;
 import fr.caddarik.theblog.dao.jooq.tables.PostTable;
 import fr.caddarik.theblog.dao.jooq.tables.records.PostRecord;
 import fr.caddarik.theblog.model.Post;

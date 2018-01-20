@@ -6,7 +6,7 @@
 package fr.caddarik.theblog.dao;
 
 import static fr.caddarik.theblog.dao.jooq.Tables.USER;
-import fr.caddarik.theblog.dao.jooq.mapper.UserMapper;
+import fr.caddarik.theblog.dao.mapper.UserMapper;
 import fr.caddarik.theblog.dao.jooq.tables.UserTable;
 import fr.caddarik.theblog.dao.jooq.tables.records.UserRecord;
 import fr.caddarik.theblog.model.User;

@@ -5,7 +5,7 @@
  */
 package fr.caddarik.theblog.dao;
 
-import fr.caddarik.theblog.dao.jooq.mapper.Mapper;
+import fr.caddarik.theblog.dao.mapper.Mapper;
 import fr.caddarik.theblog.model.Entity;
 import fr.caddarik.theblog.service.exeption.ResourceNotFoundException;
 import fr.caddarik.theblog.service.exeption.ResourcePersistanceException;
