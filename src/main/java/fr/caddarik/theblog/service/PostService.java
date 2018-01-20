@@ -32,6 +32,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import lombok.extern.slf4j.Slf4j;
+import org.jboss.resteasy.annotations.cache.Cache;
 
 /**
  * TODO inheritance
@@ -154,6 +155,7 @@ public class PostService {
      * @return the corresonding post
      * @throws ResourceNotFoundException if no user with the corresponding id has been found
      */
+    @Cache(sMaxAge = 5*60)
     @GET
     @Path("{id}")
     @Produces(APPLICATION_XML)
@@ -173,6 +175,7 @@ public class PostService {
      * @param keyword the keyword to find in the title or the body
      * @return a List of the matching posts
      */
+    @Cache(sMaxAge = 5*60)
     @GET
     @Produces(APPLICATION_XML)
     public List<Post> find(@NotNull @QueryParam("keyword") String keyword) {
