@@ -1,0 +1,25 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ * Author:  cedric
+ * Created: 20 janv. 2018
+ */
+create table blog.user (
+	id INTEGER PRIMARY KEY,
+	name TEXT NOT NULL,
+	email TEXT NOT NULL,
+	password TEXT NOT NULL,
+        CONSTRAINT email_unique UNIQUE (email)
+) ;
+
+create table blog.post (
+	id INTEGER PRIMARY KEY,
+	user_id INTEGER NOT NULL,
+	title TEXT NOT NULL,
+	body TEXT NOT NULL,
+	date TEXT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE RESTRICT
+) ;
