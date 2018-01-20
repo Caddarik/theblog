@@ -79,7 +79,7 @@ public class UserService {
      * @throws AuthException if the client is not allowed to call this method
      * @throws LoginException if the login or password are incorrect
      * @throws ResourcePersistanceException if the entity was not updated
-     * @throws ResourceNotFoundException if no entity with the corresponding entity has been found
+     * @throws ResourceNotFoundException if no user with the corresponding id has been found
      */
     @PUT
     @Path("{id}")
@@ -110,7 +110,7 @@ public class UserService {
      * @return the corresponding user
      * @throws AuthException if the client is not allowed to call this method
      * @throws LoginException if the login or password are incorrect
-     * @throws ResourceNotFoundException if no entity with the corresponding entity has been found
+     * @throws ResourceNotFoundException if no user with the corresponding id has been found
      */
     @GET
     @Path("{id}")
