@@ -22,11 +22,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Post extends Entity {
 
     @NotNull
-    @Size(min = 1, max = 2000000000)
+    @Size(min = 1, max = 150)
     private String title;
     
     @NotNull
-    @Size(min = 1, max = 2000000000)
+    @Size(min = 1, max = 150)
     private String body;
     
     @NotNull
