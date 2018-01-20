@@ -7,12 +7,18 @@ package fr.caddarik.theblog.service;
 
 import fr.caddarik.theblog.dao.PostDAO;
 import fr.caddarik.theblog.model.Post;
+import fr.caddarik.theblog.security.AuthorizationChecker;
+import fr.caddarik.theblog.service.exeption.ResourceNotFoundException;
+import fr.caddarik.theblog.service.exeption.ResourcePersistanceException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -34,10 +40,16 @@ public class PostService {
 
     @Inject
     private PostDAO dao;
+    
+    @Inject
+    private AuthorizationChecker authorizationChecker;
 
     @POST
     @Consumes(APPLICATION_XML)
-    public Integer create(Post post) {
+    public Integer create(@NotNull @Valid Post post,
+            @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret)
+            throws ResourcePersistanceException {
+        
         try {
             log.debug("create({})", post);
             
@@ -53,7 +65,7 @@ public class PostService {
     @PUT
     @Path("{id}")
     @Consumes(APPLICATION_XML)
-    public void edit(@PathParam("id") Integer id, Post post) {
+    public void edit(@NotNull @PathParam("id") Integer id, @NotNull @Valid Post post) throws ResourcePersistanceException, ResourceNotFoundException {
         try {
             log.debug("edit({}, {})", id, post);
             
@@ -68,7 +80,7 @@ public class PostService {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public void remove(@NotNull @PathParam("id") Integer id) throws ResourcePersistanceException, ResourceNotFoundException {
         try {
             log.debug("remove({})", id);
             
@@ -85,7 +97,7 @@ public class PostService {
     @GET
     @Path("{id}")
     @Produces(APPLICATION_XML)
-    public Post find(@PathParam("id") Integer id) {
+    public Post find(@NotNull @PathParam("id") Integer id) throws ResourceNotFoundException {
         try {
             log.debug("find({})", id);
             return dao.find(id);
@@ -97,7 +109,7 @@ public class PostService {
 
     @GET
     @Produces(APPLICATION_XML)
-    public List<Post> find(@QueryParam("keyword") String keyword) {
+    public List<Post> find(@NotNull @QueryParam("keyword") String keyword) {
         try {
             log.debug("find({})", keyword);
             return dao.search(keyword);

@@ -7,6 +7,7 @@ package fr.caddarik.theblog.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Entity implements Serializable {
     public Entity() {
     }
 
-    public Entity(Integer id) {
+    public Entity(@NotNull Integer id) {
         this.id = id;
     }
 
@@ -27,7 +28,7 @@ public class Entity implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(@NotNull Integer id) {
         this.id = id;
     }
 

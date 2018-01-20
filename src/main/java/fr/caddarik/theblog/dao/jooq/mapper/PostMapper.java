@@ -12,13 +12,18 @@ import fr.caddarik.theblog.model.User;
 import org.jooq.exception.MappingException;
 
 /**
- *
+ * the mapper to bind a Post with the jOOQ PostRecord
  * @author cedric
  */
 public class PostMapper implements Mapper<Post, PostRecord>{
     
     private final DateConverter dateConverter = new DateConverter();
     
+    /**
+     * 
+     * @param record the jOOQ PostRecord
+     * @return the corresponding Post entity
+     */
     @Override
     public Post map(PostRecord record) {
         Post entity = new Post(record.getId());
@@ -29,14 +34,20 @@ public class PostMapper implements Mapper<Post, PostRecord>{
         return entity;
     }
 
+    /**
+     * 
+     * @param post the Post entity to map
+     * @return the corresponding PostRecord
+     * @throws MappingException 
+     */
     @Override
-    public PostRecord unmap(Post entity) throws MappingException {
+    public PostRecord unmap(Post post) throws MappingException {
         PostRecord record = new PostRecord();
-        record.setId(entity.getId());
-        record.setUserId(entity.getUser().getId());
-        record.setDate(dateConverter.convertToDatabaseColumn(entity.getDate()));
-        record.setTitle(entity.getTitle());
-        record.setBody(entity.getBody());
+        record.setId(post.getId());
+        record.setUserId(post.getUser().getId());
+        record.setDate(dateConverter.convertToDatabaseColumn(post.getDate()));
+        record.setTitle(post.getTitle());
+        record.setBody(post.getBody());
         return record;
     }
     

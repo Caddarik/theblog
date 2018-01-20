@@ -10,27 +10,38 @@ import fr.caddarik.theblog.model.User;
 import org.jooq.exception.MappingException;
 
 /**
- *
+ * the mapper to bind a User with the jOOQ UserRecord
  * @author cedric
  */
 public class UserMapper implements Mapper<User, UserRecord> {
 
+    /**
+     * 
+     * @param record the jOOQ Record UserRecord
+     * @return the corresponding User entity
+     */
     @Override
-    public User map(UserRecord r) {
-        User e = new User(r.getId());
-        e.setEmail(r.getEmail());
-        e.setName(r.getName());
-        e.setPassword(r.getPassword());
+    public User map(UserRecord record) {
+        User e = new User(record.getId());
+        e.setEmail(record.getEmail());
+        e.setName(record.getName());
+        e.setPassword(record.getPassword());
         return e;
     }
 
+    /**
+     * 
+     * @param user the User entity to map
+     * @return the corresponding UserRecord
+     * @throws MappingException 
+     */
     @Override
-    public UserRecord unmap(User e) throws MappingException {
+    public UserRecord unmap(User user) throws MappingException {
         UserRecord r = new UserRecord();
-        r.setId(e.getId());
-        r.setName(e.getName());
-        r.setPassword(e.getPassword());
-        r.setEmail(e.getEmail());
+        r.setId(user.getId());
+        r.setName(user.getName());
+        r.setPassword(user.getPassword());
+        r.setEmail(user.getEmail());
         return r;
     }
     

@@ -8,11 +8,15 @@ package fr.caddarik.theblog.service;
 import fr.caddarik.theblog.dao.UserDAO;
 import fr.caddarik.theblog.model.User;
 import fr.caddarik.theblog.security.AuthorizationChecker;
+import fr.caddarik.theblog.service.exeption.AuthException;
+import fr.caddarik.theblog.service.exeption.BadRequestException;
+import fr.caddarik.theblog.service.exeption.LoginException;
+import fr.caddarik.theblog.service.exeption.ResourceNotFoundException;
+import fr.caddarik.theblog.service.exeption.ResourcePersistanceException;
 import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.security.auth.login.LoginException;
-import javax.security.auth.message.AuthException;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,6 +27,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,26 +48,50 @@ public class UserService {
     public UserService() {
     }
 
+    /**
+     * A service to create a new user
+     * 
+     * @param user the user to create
+     * @return the id of the created user
+     * @throws ResourcePersistanceException if the user is not persisted
+     */
     @POST
     @Consumes(APPLICATION_XML)
-    public Integer create(User entity) {
+    @NotNull
+    public Integer create(@NonNull @Valid User user) throws ResourcePersistanceException {
         try {
-            log.debug("create({})", entity);
-            return dao.create(entity);
+            log.debug("create({})", user);
+            return dao.create(user);
         } catch (RuntimeException e) {
-            log.error("create({}) raise an Exception", entity, e);
+            log.error("create({}) raise an Exception", user, e);
             throw e;
         }
     }
 
+    /**
+     * A service to edit/update a user
+     * 
+     * @param id the id of the user to update
+     * @param user the user to update
+     * @param login the login of the client
+     * @param secret the password of the client
+     * @throws BadRequestException if the id is not equals to user.id 
+     * @throws AuthException if the client is not allowed to call this method
+     * @throws LoginException if the login or password are incorrect
+     * @throws ResourcePersistanceException if the entity was not updated
+     * @throws ResourceNotFoundException if no entity with the corresponding entity has been found
+     */
     @PUT
     @Path("{id}")
     @Consumes(APPLICATION_XML)
-    public void edit(@PathParam("id") Integer id, User user, @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret) throws IllegalArgumentException, AuthException, LoginException {
+    public void edit(@NotNull @PathParam("id") Integer id, @NotNull @Valid User user,
+            @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret)
+            throws BadRequestException, AuthException, LoginException, ResourcePersistanceException, ResourceNotFoundException {
+        
         try {
             log.debug("edit({}, {})", id, user);
             if(!Objects.equals(id, user.getId())) {
-                throw new IllegalArgumentException("the PathParam id must be the same as user.getId()");
+                throw new BadRequestException("the PathParam id must be the same as user.getId()");
             }
             authorizationChecker.checkForUser(login, secret, id);
             dao.update(user);
@@ -72,10 +101,25 @@ public class UserService {
         }
     }
 
+    /**
+     * A service to find a user by ID
+     * 
+     * @param id the Id of the user to find
+     * @param login the login of the client
+     * @param secret the password of the client
+     * @return the corresponding user
+     * @throws AuthException if the client is not allowed to call this method
+     * @throws LoginException if the login or password are incorrect
+     * @throws ResourceNotFoundException if no entity with the corresponding entity has been found
+     */
     @GET
     @Path("{id}")
     @Produces(APPLICATION_XML)
-    public User find(@PathParam("id") Integer id, @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret) throws AuthException, LoginException {
+    @Valid
+    public User find(@NotNull @PathParam("id") Integer id,
+            @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret)
+            throws AuthException, LoginException, ResourceNotFoundException {
+        
         try {
             log.debug("find({})", id);
             authorizationChecker.checkForUser(login, secret, id);

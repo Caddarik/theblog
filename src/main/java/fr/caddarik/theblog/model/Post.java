@@ -6,6 +6,7 @@
 package fr.caddarik.theblog.model;
 
 import java.util.Date;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,6 +32,8 @@ public class Post extends Entity {
     @NotNull
     private Date date;
     
+    @NotNull
+    @Valid
     private User user;
 
     public Post() {
@@ -38,13 +41,6 @@ public class Post extends Entity {
 
     public Post(Integer id) {
         super(id);
-    }
-
-    public Post(Integer id, String title, String body, Date date) {
-        super(id);
-        this.title = title;
-        this.body = body;
-        this.date = date;
     }
 
     public String getTitle() {

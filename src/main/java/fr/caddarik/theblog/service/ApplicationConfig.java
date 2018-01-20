@@ -39,10 +39,8 @@ public class ApplicationConfig extends Application {
         resources.add(fr.caddarik.theblog.service.PostService.class);
         resources.add(fr.caddarik.theblog.service.SecurityService.class);
         resources.add(fr.caddarik.theblog.service.UserService.class);
-        resources.add(fr.caddarik.theblog.service.exeption.AuthExceptionMapper.class);
-        resources.add(fr.caddarik.theblog.service.exeption.IllegalArgumentExceptionMapper.class);
-        resources.add(fr.caddarik.theblog.service.exeption.LoginExceptionMapper.class);
-        resources.add(fr.caddarik.theblog.service.exeption.ThrowableExceptionMapper.class);
+        resources.add(fr.caddarik.theblog.service.exeption.mapper.TheBlogExceptionMapper.class);
+        resources.add(fr.caddarik.theblog.service.exeption.mapper.ThrowableExceptionMapper.class);
     }
     
 }

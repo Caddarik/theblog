@@ -16,7 +16,8 @@ import org.jooq.Condition;
 import org.jooq.Field;
 
 /**
- *
+ * The DAO for Post
+ * 
  * @author cedric
  */
 @Stateless
@@ -24,6 +25,15 @@ public class PostDAO extends AbstractDAO<Post, PostRecord, PostTable> {
 
     private final PostMapper mapper = new PostMapper();
     
+    /**
+     * Return all the posts with the specified keyword in the title or body
+     * 
+     * this method work with an SQL queries
+     * It could be uppgrated by using a search engine like ElasticSearch instead
+     * 
+     * @param keyword the keyword to search
+     * @return the matching posts
+     */
     public List<Post> search(String keyword) {
         if(keyword==null || keyword.isEmpty()) {
             return findAll();
@@ -34,11 +44,22 @@ public class PostDAO extends AbstractDAO<Post, PostRecord, PostTable> {
                 .fetch(mapper);
     }
 
+    /**
+     * 
+     * @param keyword
+     * @return the Condition in the TITLE or in the BODY
+     */
     private Condition getSearchCondition(String keyword) {
         return getSearchCondition(keyword, POST.TITLE)
                 .or(getSearchCondition(keyword, POST.BODY));
     }
 
+    /**
+     * 
+     * @param keyword the keyword to search
+     * @param field the field to match the keyword with
+     * @return the Condition field like %keyword%
+     */
     private Condition getSearchCondition(String keyword, Field<String> field) {
         return field.like("%"+keyword+"%");
     }

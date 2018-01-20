@@ -7,10 +7,9 @@ package fr.caddarik.theblog.service;
 
 import fr.caddarik.theblog.model.User;
 import fr.caddarik.theblog.security.AuthorizationChecker;
+import fr.caddarik.theblog.service.exeption.LoginException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.security.auth.login.LoginException;
-import javax.security.auth.message.AuthException;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -32,17 +31,17 @@ public class SecurityService {
     private AuthorizationChecker authorizationChecker;
 
     /**
+     * return the user corresponding to this login and password
      * 
      * @param login the email of the user
      * @param secret the password crypted with PBKDF2WithHmacSHA1 algorithm
      * @return the corresponding user
-     * @throws javax.security.auth.message.AuthException
      * @throws LoginException if login or password is incorrect
      */
     @GET
     @Path("login")
     @Produces(APPLICATION_XML)
-    public User login(@NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret) throws AuthException, LoginException {
+    public User login(@NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret) throws LoginException {
         try {
             log.debug("login({},{})", login, secret);
             return authorizationChecker.login(login, secret);

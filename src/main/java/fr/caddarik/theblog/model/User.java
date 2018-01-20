@@ -5,6 +5,7 @@
  */
 package fr.caddarik.theblog.model;
 
+import java.util.HashSet;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,7 +36,7 @@ public class User extends Entity {
     private String password;
     
     @XmlTransient
-    private Set<Post> postSet;
+    private Set<Post> postSet = new HashSet<>();
 
     public User() {
     }

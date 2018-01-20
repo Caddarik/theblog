@@ -11,7 +11,7 @@ import org.jooq.RecordMapper;
 import org.jooq.RecordUnmapper;
 
 /**
- *
+ *  the mapper to bind an entity with the jOOQ Record
  * @author cedric
  * @param <E>
  * @param <R>

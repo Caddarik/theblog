@@ -9,11 +9,12 @@ import fr.caddarik.theblog.dao.PostDAO;
 import fr.caddarik.theblog.dao.UserDAO;
 import fr.caddarik.theblog.model.Post;
 import fr.caddarik.theblog.model.User;
+import fr.caddarik.theblog.service.exeption.AuthException;
+import fr.caddarik.theblog.service.exeption.LoginException;
+import fr.caddarik.theblog.service.exeption.ResourceNotFoundException;
 import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.security.auth.login.LoginException;
-import javax.security.auth.message.AuthException;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,15 +33,16 @@ public class AuthorizationChecker {
     private PostDAO postDAO;
 
     /**
-     *
+     * return the user corresponding to this login and password
+     * 
      * @param login the email of the user
      * @param secret the password crypted with PBKDF2WithHmacSHA1 algorithm
      * @return the corresponding user
-     * @throws LoginException if login or password is incorrect
+     * @throws LoginException if find or password is incorrect
      */
     public User login(@NotNull String login, @NotNull String secret) throws LoginException {
         log.debug("login({},{})", login, secret);
-        User user = userDAO.login(login, secret);
+        User user = userDAO.find(login, secret);
         if (user == null) {
             log.debug("login({},{}) faild", login, secret);
             throw new LoginException("Incorrect login or passoword");
@@ -50,12 +52,13 @@ public class AuthorizationChecker {
     }
 
     /**
-     *
+     * Check client privileges to access the corresponding user
+     * 
      * @param login the email of the user
      * @param secret the password crypted with PBKDF2WithHmacSHA1 algorithm
      * @param userId the id of the user targeted
-     * @throws AuthException
-     * @throws LoginException
+     * @throws AuthException if the client is not allowed to call this method
+     * @throws LoginException if the login or password are incorrect
      */
     public void checkForUser(@NotNull String login, @NotNull String secret, Integer userId) throws AuthException, LoginException {
         log.debug("checkForUser({},{},{})", login, secret, userId);
@@ -68,14 +71,16 @@ public class AuthorizationChecker {
     }
 
     /**
-     *
+     * Check client privileges to access the corresponding post
+     * 
      * @param login the email of the user
      * @param secret the password crypted with PBKDF2WithHmacSHA1 algorithm
      * @param postId the id of the post targeted
-     * @throws AuthException
-     * @throws LoginException
+     * @throws AuthException if the client is not allowed to call this method
+     * @throws LoginException if the login or password are incorrect
+     * @throws ResourceNotFoundException if the targeted post is not found
      */
-    public void checkForPost(String login, String secret, Integer postId) throws AuthException, LoginException {
+    public void checkForPost(String login, String secret, Integer postId) throws AuthException, LoginException, ResourceNotFoundException {
         log.debug("checkForPost({},{},{})", login, secret, postId);
         User user = login(login, secret);
         Post post = postDAO.find(postId);
