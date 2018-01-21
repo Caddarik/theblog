@@ -17,7 +17,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 public abstract class ServiceIT {
     
     protected final User user = new User(1, "u1", "u1@domain.io", "123");
-
+    
     protected <S> S getService(Class<S> serviceClass) {
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target("http://localhost:8080/theblog/service");

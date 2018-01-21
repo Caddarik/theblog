@@ -3,21 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.caddarik.theblog.service;
+package fr.caddarik.theblog.service.resource;
 
-import fr.caddarik.theblog.dao.PostDAO;
 import fr.caddarik.theblog.model.Post;
-import fr.caddarik.theblog.model.User;
-import fr.caddarik.theblog.security.AuthorizationChecker;
 import fr.caddarik.theblog.service.exeption.AuthException;
 import fr.caddarik.theblog.service.exeption.BadRequestException;
 import fr.caddarik.theblog.service.exeption.LoginException;
 import fr.caddarik.theblog.service.exeption.ResourceNotFoundException;
 import fr.caddarik.theblog.service.exeption.ResourcePersistanceException;
 import java.util.List;
-import java.util.Objects;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -31,7 +25,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.annotations.cache.Cache;
 
 /**
@@ -39,16 +32,9 @@ import org.jboss.resteasy.annotations.cache.Cache;
  *
  * @author cedric
  */
-@Stateless
 @Path("post")
-@Slf4j
-public class PostService {
+public interface PostService {
 
-    @Inject
-    private PostDAO dao;
-    
-    @Inject
-    private AuthorizationChecker authorizationChecker;
 
     /**
      * A service to create a post
@@ -66,23 +52,7 @@ public class PostService {
     @NotNull
     public Integer create(@NotNull @Valid Post post,
             @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret)
-            throws ResourcePersistanceException, LoginException, AuthException {
-        
-        try {
-            log.debug("create({}, {}, {})", post, login, secret);
-            
-            User user = authorizationChecker.login(login, secret);
-            if(!user.equals(post.getUser())) {
-                log.debug("create({}) {} != {}", post, user, post.getUser());
-                throw new AuthException("User " + user.getId() + " is not allowed to access this Post");
-            }
-            
-            return dao.create(post);
-        } catch (RuntimeException e) {
-            log.error("create({}) raise an Exception", post, e);
-            throw e;
-        }
-    }
+            throws ResourcePersistanceException, LoginException, AuthException ;
 
     /**
      * a service to edit/update a post
@@ -102,23 +72,7 @@ public class PostService {
     @Consumes(APPLICATION_XML)
     public void edit(@NotNull @PathParam("id") Integer id, @NotNull @Valid Post post,
             @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret)
-            throws ResourcePersistanceException, ResourceNotFoundException, LoginException, AuthException, BadRequestException {
-        
-        try {
-            log.debug("edit({}, {})", id, post);
-            
-            if(!Objects.equals(id, post.getId())) {
-                throw new BadRequestException("the PathParam id must be the same as post.getId()");
-            }
-            
-            authorizationChecker.checkForPost(login, secret, id);
-            
-            dao.update(post);
-        } catch (RuntimeException e) {
-            log.error("edit({}, {}) raise an Exception", id, post, e);
-            throw e;
-        }
-    }
+            throws ResourcePersistanceException, ResourceNotFoundException, LoginException, AuthException, BadRequestException ;
 
     /**
      * a service to delete/remove a post
@@ -134,20 +88,7 @@ public class PostService {
     @Path("{id}")
     public void remove(@NotNull @PathParam("id") Integer id,
             @NotNull @HeaderParam("login") String login, @NotNull @HeaderParam("secret") String secret)
-            throws ResourcePersistanceException, ResourceNotFoundException, LoginException, AuthException {
-        
-        try {
-            log.debug("remove({})", id);
-            
-            authorizationChecker.checkForPost(login, secret, id);
-            
-            dao.delete(id);
-        } catch (RuntimeException e) {
-            log.error("remove({}) raise an Exception", id, e);
-            throw e;
-        }
-
-    }
+            throws ResourcePersistanceException, ResourceNotFoundException, LoginException, AuthException ;
 
     /**
      * a service to find a post by the id
@@ -160,15 +101,7 @@ public class PostService {
     @GET
     @Path("{id}")
     @Produces(APPLICATION_XML)
-    public Post find(@NotNull @PathParam("id") Integer id) throws ResourceNotFoundException {
-        try {
-            log.debug("find({})", id);
-            return dao.find(id);
-        } catch (RuntimeException e) {
-            log.error("find({}) raise and Exception", id, e);
-            throw e;
-        }
-    }
+    public Post find(@NotNull @PathParam("id") Integer id) throws ResourceNotFoundException ;
 
     /**
      * A service to find posts with a keyword
@@ -179,14 +112,6 @@ public class PostService {
     @Cache(sMaxAge = 5*60)
     @GET
     @Produces(APPLICATION_XML)
-    public List<Post> find(@NotNull @QueryParam("keyword") String keyword) {
-        try {
-            log.debug("find({})", keyword);
-            return dao.search(keyword);
-        } catch (RuntimeException e) {
-            log.error("find({}) raise and Exception", keyword, e);
-            throw e;
-        }
-    }
+    public List<Post> find(@NotNull @QueryParam("keyword") String keyword) ;
 
 }
