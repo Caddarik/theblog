@@ -9,6 +9,7 @@ import fr.caddarik.theblog.model.Entity;
 import fr.caddarik.theblog.service.exeption.ResourceNotFoundException;
 import fr.caddarik.theblog.service.exeption.ResourcePersistanceException;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -26,7 +27,7 @@ public interface DAO<E extends Entity>  {
      * @return the id of the created entity
      * @throws ResourcePersistanceException if the entity is not persisted
      */
-    Integer create(E entity) throws ResourcePersistanceException;
+    Integer create(@NotNull E entity) throws ResourcePersistanceException;
     
     /**
      * 
@@ -35,7 +36,7 @@ public interface DAO<E extends Entity>  {
      * @return the corresponding entity
      * @throws ResourceNotFoundException if the entity is not found
      */
-    E find(Integer id) throws ResourceNotFoundException;
+    E find(@NotNull Integer id) throws ResourceNotFoundException;
     
     /**
      * a method to find all entities
@@ -49,7 +50,7 @@ public interface DAO<E extends Entity>  {
      * @throws ResourceNotFoundException if no entity with the corresponding entity has been found
      * @throws ResourcePersistanceException if the entity was not updated
      */
-    void update(E entity) throws ResourceNotFoundException, ResourcePersistanceException;
+    void update(@NotNull E entity) throws ResourceNotFoundException, ResourcePersistanceException;
     
     /**
      * A method to delete an entity by the id
@@ -57,7 +58,7 @@ public interface DAO<E extends Entity>  {
      * @throws ResourcePersistanceException if the entity was not delete
      * @throws ResourceNotFoundException if no entity with the corresponding entity has been found
      */
-    void delete(Integer id) throws ResourcePersistanceException, ResourceNotFoundException;
+    void delete(@NotNull Integer id) throws ResourcePersistanceException, ResourceNotFoundException;
     
     /**
      * A method to delete an entity
@@ -65,7 +66,7 @@ public interface DAO<E extends Entity>  {
      * @throws ResourcePersistanceException if the entity was not delete
      * @throws ResourceNotFoundException if no entity with the corresponding entity has been found 
      */
-    public default void delete(E entity) throws ResourcePersistanceException, ResourceNotFoundException {
+    public default void delete(@NotNull E entity) throws ResourcePersistanceException, ResourceNotFoundException {
         delete(entity.getId());
     }
 }

@@ -13,7 +13,6 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -43,7 +42,7 @@ public abstract class AbstractDAO<E extends Entity, R extends UpdatableRecord, T
     }
 
     @Override
-    public Integer create(@NotNull E entity) throws ResourcePersistanceException {
+    public Integer create(E entity) throws ResourcePersistanceException {
         try {
 
             R record = mapper().unmap(entity);
@@ -62,7 +61,7 @@ public abstract class AbstractDAO<E extends Entity, R extends UpdatableRecord, T
     }
 
     @Override
-    public void delete(@NotNull Integer id) throws ResourcePersistanceException, ResourceNotFoundException {
+    public void delete(Integer id) throws ResourcePersistanceException, ResourceNotFoundException {
         try {
             int n = context()
                     .delete(table())
@@ -78,7 +77,7 @@ public abstract class AbstractDAO<E extends Entity, R extends UpdatableRecord, T
     }
 
     @Override
-    public void update(@NotNull E entity) throws ResourcePersistanceException, ResourceNotFoundException {
+    public void update(E entity) throws ResourcePersistanceException, ResourceNotFoundException {
         try {
             R record = mapper().unmap(entity);
             Integer id = entity.getId();
@@ -96,7 +95,7 @@ public abstract class AbstractDAO<E extends Entity, R extends UpdatableRecord, T
     }
 
     @Override
-    public E find(@NotNull Integer id) throws ResourceNotFoundException {
+    public E find(Integer id) throws ResourceNotFoundException {
         try {
             return context()
                     .selectFrom(table())
