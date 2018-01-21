@@ -5,7 +5,7 @@
  */
 package fr.caddarik.theblog.service;
 
-import fr.caddarik.theblog.dao.jooq.converter.DateConverter;
+import fr.caddarik.theblog.dao.converter.DateConverter;
 import fr.caddarik.theblog.model.Post;
 import fr.caddarik.theblog.model.User;
 import fr.caddarik.theblog.service.exeption.ResourceNotFoundException;

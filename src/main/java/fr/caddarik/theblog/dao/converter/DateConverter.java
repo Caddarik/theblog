@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.caddarik.theblog.dao.jooq.converter;
+package fr.caddarik.theblog.dao.converter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
