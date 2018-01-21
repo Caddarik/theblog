@@ -4,7 +4,7 @@
 
     <groupId>fr.caddarik</groupId>
     <artifactId>theblog</artifactId>
-    <version>0.2.2</version>
+    <version>0.3.7</version>
     <packaging>war</packaging>
 
     <name>theblog</name>
@@ -15,6 +15,26 @@
     </properties>
     
     <dependencies>
+        
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>3.0.24.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>3.0.24.Final</version>
+            <scope>test</scope>
+        </dependency>
         
         <!-- RestEasy -->
         <dependency>
@@ -81,7 +101,8 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.21.0.1</version>
         </dependency>
-        
+          
+        <!-- JavaEE -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
