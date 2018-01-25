@@ -89,7 +89,7 @@ public class PostServiceIT extends ServiceIT {
     public void testIllegalAccess() throws Exception {
         log.debug("testIllegalAccess() create");
         PostService service = getService(PostService.class);
-        User hacker = new User(2, "test", "test@domain.io", "123");
+        User hacker = new User(3, "test", "test@domain.io", "123");
         Post post = getRandomPost(user);
         try {
             service.create(post, hacker.getEmail(), hacker.getPassword());
