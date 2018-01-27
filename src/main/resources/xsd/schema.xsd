@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="post" type="post"/>
+
+  <xs:element name="user" type="user"/>
+
+  <xs:complexType name="entity">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="post">
+    <xs:complexContent>
+      <xs:extension base="entity">
+        <xs:sequence>
+          <xs:element name="title" type="xs:string" minOccurs="0"/>
+          <xs:element name="body" type="xs:string" minOccurs="0"/>
+          <xs:element name="date" type="xs:dateTime" minOccurs="0"/>
+          <xs:element ref="user" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="user">
+    <xs:complexContent>
+      <xs:extension base="entity">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string" minOccurs="0"/>
+          <xs:element name="email" type="xs:string" minOccurs="0"/>
+          <xs:element name="password" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+
